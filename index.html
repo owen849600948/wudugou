@@ -3,28 +3,28 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>五毒狗组合 × 牧原股份 · 持仓走势对比</title>
+<title>五毒狗 vs 皮皮🐷</title>
 <link rel="preconnect" href="https://fonts.loli.net" crossorigin />
 <link href="https://fonts.loli.net/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #07090f;
-    --bg-2: #0b0f17;
-    --panel: #0f141f;
-    --panel-2: #131a28;
-    --line: #1d2736;
-    --line-soft: #17202d;
-    --text: #e8eef6;
-    --muted: #8291a6;
-    --faint: #5a6a80;
-    --up: #f6465d;
-    --up-soft: rgba(246,70,93,.14);
-    --down: #0ecb81;
-    --down-soft: rgba(14,203,129,.12);
-    --port: #f0b541;
-    --port-soft: rgba(240,181,65,.14);
-    --bench: #8b7cf8;
-    --bench-soft: rgba(139,124,248,.14);
+    --bg: #eaf2fb;
+    --bg-2: #e0ecf7;
+    --panel: #ffffff;
+    --panel-2: #f3f8fd;
+    --line: #d3e1f0;
+    --line-soft: #e3edf6;
+    --text: #16344e;
+    --muted: #5c7994;
+    --faint: #8ba6bd;
+    --up: #e0393f;
+    --up-soft: rgba(224,57,63,.12);
+    --down: #0ea371;
+    --down-soft: rgba(14,163,113,.12);
+    --port: #2f6fe4;
+    --port-soft: rgba(47,111,228,.12);
+    --bench: #0ba6c8;
+    --bench-soft: rgba(11,166,200,.12);
     --mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', Consolas, monospace;
     --sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   }
@@ -44,16 +44,16 @@
     content: "";
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background:
-      radial-gradient(900px 500px at 12% -8%, rgba(240,181,65,.10), transparent 60%),
-      radial-gradient(1000px 560px at 92% -10%, rgba(139,124,248,.12), transparent 60%),
-      radial-gradient(700px 500px at 50% 120%, rgba(14,203,129,.06), transparent 60%);
+      radial-gradient(900px 500px at 12% -8%, rgba(47,111,228,.12), transparent 60%),
+      radial-gradient(1000px 560px at 92% -10%, rgba(11,166,200,.14), transparent 60%),
+      radial-gradient(700px 500px at 50% 120%, rgba(14,163,113,.07), transparent 60%);
   }
   body::after {
     content: "";
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background-image:
-      linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+      linear-gradient(rgba(22,52,78,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(22,52,78,.035) 1px, transparent 1px);
     background-size: 46px 46px;
     mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 78%);
     -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 78%);
@@ -64,12 +64,15 @@
   /* ---- header ---- */
   header { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
   .brand { display: flex; align-items: center; gap: 14px; }
-  .mark { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(150deg, var(--port), var(--bench)); box-shadow: 0 8px 26px rgba(139,124,248,.28); }
+  .mark { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(150deg, var(--port), var(--bench)); box-shadow: 0 8px 26px rgba(47,111,228,.25); }
   .mark svg { display: block; }
   .brand h1 { font-size: 20px; font-weight: 900; letter-spacing: .5px; line-height: 1.2; }
   .brand .sub { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 400; }
 
   .hdr-right { display: flex; align-items: center; gap: 14px; }
+  .winner { display: flex; align-items: center; padding: 10px 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+  .winner .winner-label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 1px; margin-right: 8px; }
+  .winner .winner-text { font-size: 20px; font-weight: 900; letter-spacing: 2px; line-height: 1; }
   .live { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); font-family: var(--mono); }
   .live .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--down); box-shadow: 0 0 0 0 rgba(14,203,129,.5); animation: pulse 2s infinite; }
   @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(14,203,129,.4); } 70% { box-shadow: 0 0 0 9px rgba(14,203,129,0); } 100% { box-shadow: 0 0 0 0 rgba(14,203,129,0); } }
@@ -79,7 +82,7 @@
     padding: 9px 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
     transition: border-color .18s, transform .08s, background .18s;
   }
-  .btn:hover { border-color: #31415c; background: #17202e; }
+  .btn:hover { border-color: #b8cde4; background: #e9f2fb; }
   .btn:active { transform: translateY(1px); }
   .btn .spin { transition: transform .4s; }
   .btn.loading .spin { transform: rotate(360deg); }
@@ -102,7 +105,7 @@
   .stats .k { color: var(--faint); }
   .stats .v { color: var(--text); }
   .chips { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip { display: flex; align-items: center; gap: 8px; padding: 7px 11px; border-radius: 8px; border: 1px solid var(--line-soft); background: rgba(255,255,255,.02); font-size: 12px; }
+  .chip { display: flex; align-items: center; gap: 8px; padding: 7px 11px; border-radius: 8px; border: 1px solid var(--line-soft); background: rgba(22,52,78,.03); font-size: 12px; }
   .chip .w { color: var(--faint); font-family: var(--mono); font-size: 11px; }
   .chip .pct { font-family: var(--mono); font-weight: 600; }
 
@@ -118,7 +121,7 @@
   .tabs { display: flex; gap: 6px; padding: 14px 20px; flex-wrap: wrap; }
   .tab { font-family: var(--sans); font-size: 13px; color: var(--muted); background: transparent; border: 1px solid transparent; border-radius: 8px; padding: 7px 14px; cursor: pointer; transition: all .16s; }
   .tab:hover { color: var(--text); background: var(--panel-2); }
-  .tab.active { color: #0b0f17; background: linear-gradient(135deg, var(--port), var(--bench)); font-weight: 700; border-color: transparent; }
+  .tab.active { color: #ffffff; background: linear-gradient(135deg, var(--port), var(--bench)); font-weight: 700; border-color: transparent; }
   #chart { width: 100%; height: 470px; }
   .legend-note { padding: 0 20px 16px; display: flex; gap: 20px; flex-wrap: wrap; font-size: 12px; color: var(--muted); font-family: var(--mono); }
   .legend-note i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: 2px; }
@@ -140,10 +143,10 @@
   tbody td { text-align: right; padding: 13px 16px; font-family: var(--mono); border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
   tbody tr:last-child td { border-bottom: none; }
   tbody td:nth-child(1), tbody td:nth-child(2) { text-align: left; }
-  tbody tr:hover { background: rgba(255,255,255,.02); }
+  tbody tr:hover { background: rgba(22,52,78,.03); }
   .tname { font-family: var(--sans); font-weight: 600; color: var(--text); }
   .tcode { font-family: var(--mono); font-size: 11px; color: var(--faint); }
-  .group-row td { background: rgba(240,181,65,.03); font-weight: 600; color: var(--port); }
+  .group-row td { background: var(--bench-soft); font-weight: 600; color: var(--bench); }
   .bw { color: var(--faint); }
   .price { color: var(--text); }
   .pct-cell.up { background: var(--up-soft); }
@@ -154,7 +157,7 @@
   footer code { font-family: var(--mono); color: var(--muted); }
 
   /* toast */
-  #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: #1a2230; border: 1px solid #31415c; color: var(--text); padding: 11px 18px; border-radius: 10px; font-size: 13px; opacity: 0; pointer-events: none; transition: all .25s; z-index: 50; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+  #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: #ffffff; border: 1px solid #c7d9ec; color: var(--text); padding: 11px 18px; border-radius: 10px; font-size: 13px; opacity: 0; pointer-events: none; transition: all .25s; z-index: 50; box-shadow: 0 10px 30px rgba(22,52,78,.12); }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   #loading { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: var(--bg); transition: opacity .4s; }
@@ -178,14 +181,18 @@
       <div class="brand">
         <div class="mark">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M5 16 L9 12 L12 15 L19 7" stroke="#0b0f17" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M5 5 V19 H22" stroke="#0b0f17" stroke-width="1.8" stroke-linecap="round" opacity=".55"/>
+            <path d="M5 16 L9 12 L12 15 L19 7" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 5 V19 H22" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity=".55"/>
           </svg>
         </div>
         <div>
-          <h1>五毒狗组合 × 牧原股份</h1>
+          <h1>五毒狗 vs 皮皮🐷</h1>
           <div class="sub">持仓走势实时对比 · 归一化基准 100</div>
         </div>
+      </div>
+      <div class="winner" id="winnerWrap" style="display:none">
+        <span class="winner-label">今日战果</span>
+        <span id="winnerName" class="winner-text">--</span>
       </div>
       <div class="hdr-right">
         <span class="live"><span class="dot"></span>实时行情 · <span id="updated">--:--:--</span></span>
@@ -197,7 +204,7 @@
       <div class="card port" id="cardPort">
         <div class="top">
           <span class="name">五毒狗组合</span>
-          <span class="tag">60 / 20 / 10 / 10 固定权重</span>
+          <span class="tag">66 / 10.3 / 3 / 3.6 / 2.4 / 3 · 现金 11.7%</span>
         </div>
         <div class="main">
           <div class="mega" id="portPct">--</div>
@@ -211,14 +218,14 @@
 
       <div class="card bench" id="cardBench">
         <div class="top">
-          <span class="name">牧原股份</span>
-          <span class="tag">002714 · 深圳 · 100%持仓</span>
+          <span class="name">皮皮🐷</span>
+          <span class="tag">50 / 50 固定权重</span>
         </div>
         <div class="main">
           <div class="mega" id="benchPct">--</div>
           <div class="stats">
-            <span class="k">现价</span><span class="v" id="benchPrice">--</span>
-            <span class="k">涨跌额</span><span class="v" id="benchChg">--</span>
+            <span class="k">组合点位(基1000)</span>
+            <span class="v" id="benchPoint">--</span>
           </div>
         </div>
         <div class="chips" id="benchChips"></div>
@@ -233,7 +240,8 @@
         </div>
       </div>
       <div class="tabs" id="tabs">
-        <button class="tab active" data-k="intraday">分时</button>
+        <button class="tab" data-k="intraday">分时</button>
+        <button class="tab active" data-k="p1015">自10-15</button>
         <button class="tab" data-k="m1">近1月</button>
         <button class="tab" data-k="m3">近3月</button>
         <button class="tab" data-k="m6">近6月</button>
@@ -243,15 +251,15 @@
       <div id="chart"></div>
       <div class="legend-note">
         <span><i style="background:var(--port)"></i>五毒狗组合</span>
-        <span><i style="background:var(--bench)"></i>牧原股份</span>
+        <span><i style="background:var(--bench)"></i>皮皮🐷</span>
         <span><i style="background:var(--line)"></i>基准线 100</span>
       </div>
     </section>
 
     <section class="summary">
       <div class="sum"><div class="lbl"><i style="background:var(--port)"></i>五毒狗组合</div><div class="val" id="sumPortVal">--</div><div class="delta" id="sumPortD">--</div></div>
-      <div class="sum"><div class="lbl"><i style="background:var(--bench)"></i>牧原股份</div><div class="val" id="sumBenchVal">--</div><div class="delta" id="sumBenchD">--</div></div>
-      <div class="sum"><div class="lbl"><i style="background:var(--text)"></i>超额(组合 − 牧原)</div><div class="val" id="sumDiffVal">--</div><div class="delta" id="sumDiffD">--</div></div>
+      <div class="sum"><div class="lbl"><i style="background:var(--bench)"></i>皮皮🐷</div><div class="val" id="sumBenchVal">--</div><div class="delta" id="sumBenchD">--</div></div>
+      <div class="sum"><div class="lbl"><i style="background:var(--text)"></i>超额(五毒狗 − 皮皮🐷)</div><div class="val" id="sumDiffVal">--</div><div class="delta" id="sumDiffD">--</div></div>
     </section>
 
     <section class="table-wrap">
@@ -265,7 +273,7 @@
     </section>
 
     <footer>
-      数据来源：东方财富公开行情接口 · 组合涨跌幅按固定权重加权计算 · 组合点位 = 1000 × Σ(权重 × 现价/昨收)<br/>
+      数据来源：东方财富公开行情接口 · 组合涨跌幅按固定权重加权计算 · 组合点位 = 1000 × (Σ权重×现价/昨收 + 现金占比)<br/>
       前复权日线数据计算区间收益，仅用于走势对比参考，不构成投资建议。
     </footer>
   </div>
@@ -279,19 +287,25 @@
   "use strict";
 
   // ---- 标的基础配置 ----
+  const PORT_NAME  = "五毒狗组合";
+  const BENCH_NAME = "皮皮🐷";
   const STOCKS = [
-    { code: "600008", market: 1, name: "首创环保", weight: 0.60, group: "port" },
-    { code: "600096", market: 1, name: "云天化",   weight: 0.20, group: "port" },
-    { code: "601899", market: 1, name: "紫金矿业", weight: 0.10, group: "port" },
-    { code: "002001", market: 0, name: "新和成",   weight: 0.10, group: "port" },
-    { code: "002714", market: 0, name: "牧原股份", weight: 1.00, group: "bench" }
+    { code: "600008", market: 1, name: "首创环保", weight: 0.66,  group: "port" },
+    { code: "600096", market: 1, name: "云天化",   weight: 0.103, group: "port" },
+    { code: "601899", market: 1, name: "紫金矿业", weight: 0.03,  group: "port" },
+    { code: "002001", market: 0, name: "新和成",   weight: 0.036, group: "port" },
+    { code: "002749", market: 0, name: "国光股份", weight: 0.024, group: "port" },
+    { code: "000937", market: 0, name: "冀中能源", weight: 0.03,  group: "port" },
+    { code: "002714", market: 0, name: "牧原股份", weight: 0.50,  group: "bench" },
+    { code: "001201", market: 0, name: "东瑞股份", weight: 0.50,  group: "bench" }
   ];
   const PORT  = STOCKS.filter(s => s.group === "port");
-  const BENCH = STOCKS.find(s => s.group === "bench");
+  const BENCH = STOCKS.filter(s => s.group === "bench");
   const secid = s => (s.market === 1 ? "1." : "0.") + s.code;
 
   const PERIODS = {
     intraday: { label: "分时",  type: "intraday" },
+    p1015: { label: "自10-15", start: "2026-10-15" },
     m1: { label: "近1月", days: 22 },
     m3: { label: "近3月", days: 66 },
     m6: { label: "近6月", days: 132 },
@@ -300,9 +314,8 @@
   };
 
   // ---- 状态 ----
-  let currentKey = "intraday";
+  let currentKey = "p1015";
   let quoteMap = {};
-  let klinesCache = null;
   let chart = null;
 
   // ---- 工具 ----
@@ -324,6 +337,7 @@
   const signClass = v => v > 0 ? "up" : v < 0 ? "down" : "flat";
   const sPct = v => (v == null || isNaN(v)) ? "--" : (v > 0 ? "+" : "") + Number(v).toFixed(2) + "%";
   const sNum = v => (v == null || isNaN(v)) ? "--" : (v > 0 ? "+" : "") + Number(v).toFixed(2);
+  const wTxt = w => { const p = Math.round(w * 1000) / 10; return (p % 1 === 0 ? p : p.toFixed(1)) + "%"; };
 
   function toast(msg) {
     const t = $("toast");
@@ -368,11 +382,11 @@
   }
 
   async function loadKlines() {
-    if (klinesCache) return klinesCache;
+    const beg = begYmd();
     const out = {};
     await Promise.all(STOCKS.map(s => {
       const url = "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=" + secid(s) +
-        "&klt=101&fqt=1&beg=0&end=20500101&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61";
+        "&klt=101&fqt=1&beg=" + beg + "&end=20500101&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61";
       return jsonp(url).then(data => {
         const klines = (data && data.data && data.data.klines) || [];
         out[s.code] = klines.map(k => {
@@ -381,20 +395,31 @@
         });
       });
     }));
-    klinesCache = out;
     return out;
   }
 
   // ---- 计算 ----
-  function portPct(q) {
+  function groupPct(group, q) {
     let p = 0;
-    for (const s of PORT) { const o = q[s.code]; if (o && !isNaN(o.pct)) p += s.weight * o.pct; }
+    for (const s of group) { const o = q[s.code]; if (o && !isNaN(o.pct)) p += s.weight * o.pct; }
     return p;
   }
-  function portPoint(q) {
-    let v = 0, ok = true;
-    for (const s of PORT) { const o = q[s.code]; if (!o || !o.pre) { ok = false; break; } v += s.weight * (o.price / o.pre); }
+  function groupPoint(group, q) {
+    let v = 0, wsum = 0, ok = true;
+    for (const s of group) { const o = q[s.code]; if (!o || !o.pre) { ok = false; break; } v += s.weight * (o.price / o.pre); wsum += s.weight; }
+    if (ok) v += (1 - wsum);
     return ok ? v * 1000 : null;
+  }
+  const portPct = q => groupPct(PORT, q);
+  const benchPct = q => groupPct(BENCH, q);
+  const portPoint = q => groupPoint(PORT, q);
+  const benchPoint = q => groupPoint(BENCH, q);
+
+  function begYmd() {
+    const d = new Date();
+    d.setFullYear(d.getFullYear() - 4);
+    const p = x => (x < 10 ? "0" + x : "" + x);
+    return "" + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate());
   }
 
   function fmtAxisLabel(v) {
@@ -406,28 +431,36 @@
 
   // ---- 渲染：分时 ----
   function renderIntraday(rows) {
-    const benchRow = rows.find(r => r.code === BENCH.code);
-    const axis = benchRow.times;
+    const baseRow = rows.find(r => r.times && r.times.length) || { times: [] };
+    const axis = baseRow.times;
     // per-stock index (base 100 = 昨收)
     const idx = {};
     for (const s of STOCKS) {
       const r = rows.find(x => x.code === s.code);
       const pre = quoteMap[s.code] && quoteMap[s.code].pre;
-      idx[s.code] = axis.map(t => { const c = r.closes[t]; return (c != null && pre) ? (c / pre) * 100 : null; });
+      idx[s.code] = axis.map(t => { const c = r && r.closes ? r.closes[t] : null; return (c != null && pre) ? (c / pre) * 100 : null; });
     }
-    const port = axis.map((t, i) => {
-      let v = 0;
-      for (const s of PORT) { const vi = idx[s.code][i]; if (vi == null) return null; v += s.weight * vi; }
-      return v;
+    const combine = group => axis.map((t, i) => {
+      let v = 0, wsum = 0;
+      for (const s of group) { const vi = idx[s.code][i]; if (vi == null) return null; v += s.weight * vi; wsum += s.weight; }
+      return v + (1 - wsum) * 100;
     });
-    drawChart(axis, port, idx[BENCH.code]);
-    fillSummary(port, idx[BENCH.code]);
+    const port = combine(PORT);
+    const bench = combine(BENCH);
+    drawChart(axis, port, bench);
+    fillSummary(port, bench);
   }
 
   // ---- 渲染：日线 ----
-  function renderDaily(klines, days) {
-    const ref = klines[BENCH.code];
-    const start = Math.max(0, ref.length - days);
+  function renderDaily(klines, opts) {
+    const ref = klines[BENCH[0].code];
+    let start;
+    if (opts.start) {
+      start = ref.findIndex(k => k.date >= opts.start);
+      if (start < 0) start = ref.length - 1;
+    } else {
+      start = Math.max(0, ref.length - opts.days);
+    }
     const dates = ref.slice(start).map(k => k.date);
 
     const mapClose = {};
@@ -439,25 +472,27 @@
       vals[s.code] = dates.map(d => { const c = mapClose[s.code][d]; if (c == null) return last; last = c; return c; });
     }
 
-    // 牧原：直接按首个有效价归一化
-    const benchBase = vals[BENCH.code].find(x => x != null);
-    const benchIdx = vals[BENCH.code].map(v => (v == null || benchBase == null) ? null : (v / benchBase) * 100);
-
     // 组合：每日再平衡，累积收益
-    const port = new Array(dates.length);
-    port[0] = 100;
-    for (let i = 1; i < dates.length; i++) {
-      let r = 0, ok = true;
-      for (const s of PORT) {
-        const a = vals[s.code][i - 1], b = vals[s.code][i];
-        if (a == null || b == null || a === 0) { ok = false; break; }
-        r += s.weight * (b / a - 1);
+    const cumulate = group => {
+      const n = vals[group[0].code].length;
+      const s = new Array(n);
+      s[0] = 100;
+      for (let i = 1; i < n; i++) {
+        let r = 0, ok = true;
+        for (const st of group) {
+          const a = vals[st.code][i - 1], b = vals[st.code][i];
+          if (a == null || b == null || a === 0) { ok = false; break; }
+          r += st.weight * (b / a - 1);
+        }
+        s[i] = ok ? s[i - 1] * (1 + r) : s[i - 1];
       }
-      port[i] = ok ? port[i - 1] * (1 + r) : port[i - 1];
-    }
+      return s;
+    };
 
-    drawChart(dates, port, benchIdx);
-    fillSummary(port, benchIdx);
+    const port = cumulate(PORT);
+    const bench = cumulate(BENCH);
+    drawChart(dates, port, bench);
+    fillSummary(port, bench);
   }
 
   // ---- ECharts ----
@@ -473,14 +508,14 @@
       legend: { show: false },
       tooltip: {
         trigger: "axis",
-        axisPointer: { type: "cross", lineStyle: { color: "#31415c" }, crossStyle: { color: "#31415c" }, label: { backgroundColor: "#1a2230" } },
-        backgroundColor: "rgba(13,18,27,.96)",
-        borderColor: "#2a3547",
+        axisPointer: { type: "cross", lineStyle: { color: "#9fbcdd" }, crossStyle: { color: "#9fbcdd" }, label: { backgroundColor: "#dbe8f5", textStyle: { color: "#16344e" } } },
+        backgroundColor: "rgba(255,255,255,.98)",
+        borderColor: "#d3e1f0",
         borderWidth: 1,
         padding: [10, 14],
-        textStyle: { color: "#dbe4ee", fontFamily: "JetBrains Mono, monospace", fontSize: 12 },
+        textStyle: { color: "#16344e", fontFamily: "JetBrains Mono, monospace", fontSize: 12 },
         formatter: function (params) {
-          let html = '<div style="font-size:12px;color:#8291a6;margin-bottom:6px;font-family:\'JetBrains Mono\',monospace">' + params[0].axisValue + '</div>';
+          let html = '<div style="font-size:12px;color:#5c7994;margin-bottom:6px;font-family:\'JetBrains Mono\',monospace">' + params[0].axisValue + '</div>';
           params.forEach(p => {
             html += '<div style="display:flex;justify-content:space-between;gap:28px;align-items:center;padding:2px 0">' +
               '<span style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;border-radius:2px;background:' + p.color + '"></span>' +
@@ -488,8 +523,8 @@
           });
           if (params.length === 2 && params[0].value != null && params[1].value != null) {
             const diff = params[0].value - params[1].value;
-            const c = diff >= 0 ? "#f6465d" : "#0ecb81";
-            html += '<div style="margin-top:7px;padding-top:7px;border-top:1px solid #1d2736;font-size:12px;color:' + c + '">组合 − 牧原：' + (diff >= 0 ? "+" : "") + diff.toFixed(2) + '</div>';
+            const c = diff >= 0 ? "#e0393f" : "#0ea371";
+            html += '<div style="margin-top:7px;padding-top:7px;border-top:1px solid #e3edf6;font-size:12px;color:' + c + '">五毒狗 − 皮皮🐷：' + (diff >= 0 ? "+" : "") + diff.toFixed(2) + '</div>';
           }
           return html;
         }
@@ -498,9 +533,9 @@
         type: "category",
         data: axis,
         boundaryGap: false,
-        axisLine: { lineStyle: { color: "#1d2736" } },
+        axisLine: { lineStyle: { color: "#d3e1f0" } },
         axisTick: { show: false },
-        axisLabel: { color: "#5a6a80", fontFamily: "JetBrains Mono, monospace", fontSize: 11, formatter: fmtAxisLabel, hideOverlap: true },
+        axisLabel: { color: "#8ba6bd", fontFamily: "JetBrains Mono, monospace", fontSize: 11, formatter: fmtAxisLabel, hideOverlap: true },
         splitLine: { show: false }
       },
       yAxis: {
@@ -508,23 +543,23 @@
         scale: true,
         axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: "#5a6a80", fontFamily: "JetBrains Mono, monospace", fontSize: 11, formatter: v => v.toFixed(1) },
-        splitLine: { lineStyle: { color: "#131a28" }, show: true }
+        axisLabel: { color: "#8ba6bd", fontFamily: "JetBrains Mono, monospace", fontSize: 11, formatter: v => v.toFixed(1) },
+        splitLine: { lineStyle: { color: "#e3edf6" }, show: true }
       },
       series: [
         {
-          name: "五毒狗组合", type: "line", data: portSeries, showSymbol: false, smooth: false,
-          lineStyle: { color: "#f0b541", width: 2 },
-          itemStyle: { color: "#f0b541" },
-          areaStyle: { color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: "rgba(240,181,65,.22)" }, { offset: 1, color: "rgba(240,181,65,0)" }] } },
+          name: PORT_NAME, type: "line", data: portSeries, showSymbol: false, smooth: false,
+          lineStyle: { color: "#2f6fe4", width: 2 },
+          itemStyle: { color: "#2f6fe4" },
+          areaStyle: { color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: "rgba(47,111,228,.20)" }, { offset: 1, color: "rgba(47,111,228,0)" }] } },
           connectNulls: true,
-          markLine: { silent: true, symbol: "none", lineStyle: { color: "#2a3547", type: "dashed", width: 1 }, label: { show: false }, data: [{ yAxis: 100 }] }
+          markLine: { silent: true, symbol: "none", lineStyle: { color: "#b6cce4", type: "dashed", width: 1 }, label: { show: false }, data: [{ yAxis: 100 }] }
         },
         {
-          name: "牧原股份", type: "line", data: benchSeries, showSymbol: false, smooth: false,
-          lineStyle: { color: "#8b7cf8", width: 2 },
-          itemStyle: { color: "#8b7cf8" },
-          areaStyle: { color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: "rgba(139,124,248,.20)" }, { offset: 1, color: "rgba(139,124,248,0)" }] } },
+          name: BENCH_NAME, type: "line", data: benchSeries, showSymbol: false, smooth: false,
+          lineStyle: { color: "#0ba6c8", width: 2 },
+          itemStyle: { color: "#0ba6c8" },
+          areaStyle: { color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: "rgba(11,166,200,.18)" }, { offset: 1, color: "rgba(11,166,200,0)" }] } },
           connectNulls: true
         }
       ]
@@ -560,43 +595,55 @@
     const ptEl = $("portPoint");
     ptEl.textContent = point == null ? "--" : point.toFixed(2);
     ptEl.className = "v " + signClass(pp);
+    $("portChips").innerHTML = chipsHtml(PORT, q);
 
-    // 组合成分 chips
-    const chipsHtml = PORT.map(s => {
-      const o = q[s.code];
-      return '<span class="chip"><span style="font-weight:600">' + s.name + '</span>' +
-        '<span class="w">' + Math.round(s.weight * 100) + '%</span>' +
-        '<span class="pct ' + signClass(o ? o.pct : 0) + '">' + (o ? sPct(o.pct) : "--") + '</span></span>';
-    }).join("");
-    $("portChips").innerHTML = chipsHtml;
-
-    const bo = q[BENCH.code];
-    const bp = bo ? bo.pct : null;
+    const bp = benchPct(q);
+    const bpoint = benchPoint(q);
     const bEl = $("benchPct");
     bEl.textContent = sPct(bp);
     bEl.className = "mega " + signClass(bp);
-    const bpr = $("benchPrice"); bpr.textContent = "¥ " + (bo ? n2(bo.price) : "--"); bpr.className = "v " + signClass(bp);
-    const bch = $("benchChg"); bch.textContent = bo ? sNum(bo.chg) : "--"; bch.className = "v " + signClass(bp);
+    const bpt = $("benchPoint");
+    bpt.textContent = bpoint == null ? "--" : bpoint.toFixed(2);
+    bpt.className = "v " + signClass(bp);
+    $("benchChips").innerHTML = chipsHtml(BENCH, q);
+    updateWinner();
+  }
 
-    const bChips = '<span class="chip"><span style="font-weight:600">基准 100%持仓</span>' +
-      '<span class="pct ' + signClass(bp) + '">' + (bo ? sPct(bo.pct) : "--") + '</span></span>' +
-      '<span class="chip"><span class="w">高</span>' + (bo ? n2(bo.high) : "--") + '</span>' +
-      '<span class="chip"><span class="w">低</span>' + (bo ? n2(bo.low) : "--") + '</span>';
-    $("benchChips").innerHTML = bChips;
+  function chipsHtml(group, q) {
+    return group.map(s => {
+      const o = q[s.code];
+      return '<span class="chip"><span style="font-weight:600">' + s.name + '</span>' +
+        '<span class="w">' + wTxt(s.weight) + '</span>' +
+        '<span class="pct ' + signClass(o ? o.pct : 0) + '">' + (o ? sPct(o.pct) : "--") + '</span></span>';
+    }).join("");
+  }
+
+  function updateWinner() {
+    const pp = portPct(quoteMap);
+    const bp = benchPct(quoteMap);
+    const wrap = $("winnerWrap");
+    const name = $("winnerName");
+    if (pp == null || bp == null || pp === bp) { wrap.style.display = "none"; return; }
+    wrap.style.display = "flex";
+    if (pp > bp) {
+      name.textContent = "🐶 五毒狗赢"; name.style.color = "var(--port)";
+    } else {
+      name.textContent = "🐷 皮皮虾赢"; name.style.color = "var(--bench)";
+    }
   }
 
   function updateTable() {
     const q = quoteMap;
     let rows = "";
-    const all = [...PORT, BENCH];
+    const all = [...PORT, ...BENCH];
     all.forEach(s => {
       const o = q[s.code];
       const isPort = s.group === "port";
       const pctCls = signClass(o ? o.pct : 0);
-      rows += '<tr' + (s.code === BENCH.code ? ' class="group-row"' : "") + '>' +
-        '<td><div class="tname">' + s.name + (isPort ? "" : ' <span style="color:var(--bench);font-weight:700">◆ 基准</span>') + '</div>' +
+      rows += '<tr' + (isPort ? "" : ' class="group-row"') + '>' +
+        '<td><div class="tname">' + s.name + (isPort ? "" : ' <span style="color:var(--bench);font-weight:700">◆ 皮皮🐷</span>') + '</div>' +
         '<div class="tcode">' + (s.market === 1 ? "SH" : "SZ") + " " + s.code + '</div></td>' +
-        '<td class="bw">' + (s.weight * 100) + '%</td>' +
+        '<td class="bw">' + wTxt(s.weight) + '</td>' +
         '<td class="price">' + (o ? n2(o.price) : "--") + '</td>' +
         '<td class="' + pctCls + '">' + (o ? sNum(o.chg) : "--") + '</td>' +
         '<td class="pct-cell ' + pctCls + '">' + (o ? sPct(o.pct) : "--") + '</td>' +
@@ -611,9 +658,9 @@
   // ---- 折线降级（无 ECharts 时）----
   function showChartFallback(axis, portSeries, benchSeries) {
     const c = $("chart");
-    let html = '<div style="padding:40px;color:#8291a6;font-family:monospace;">图表库加载失败，以下为数据序列前 60 点：<br/><br/>';
+    let html = '<div style="padding:40px;color:#5c7994;font-family:monospace;">图表库加载失败，以下为数据序列前 60 点：<br/><br/>';
     html += '组合：' + portSeries.slice(0, 60).map(v => v == null ? "-" : v.toFixed(2)).join(", ");
-    html += '<br/><br/>牧原：' + benchSeries.slice(0, 60).map(v => v == null ? "-" : v.toFixed(2)).join(", ");
+    html += '<br/><br/>皮皮🐷：' + benchSeries.slice(0, 60).map(v => v == null ? "-" : v.toFixed(2)).join(", ");
     html += '</div>';
     c.innerHTML = html;
   }
@@ -626,7 +673,7 @@
         renderIntraday(rows);
       } else {
         const klines = await loadKlines();
-        renderDaily(klines, PERIODS[currentKey].days);
+        renderDaily(klines, PERIODS[currentKey]);
       }
       resizeCharts();
     } catch (e) {
@@ -663,7 +710,6 @@
   $("refreshBtn").addEventListener("click", e => {
     const b = e.currentTarget;
     b.classList.add("loading");
-    klinesCache = null;
     refreshAll().finally(() => setTimeout(() => b.classList.remove("loading"), 300));
   });
 
