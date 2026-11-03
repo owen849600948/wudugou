@@ -3,6 +3,772 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>五毒🐶 vs 皮皮🐷</title>
+<link rel="preconnect" href="https://fonts.loli.net" crossorigin />
+<link href="https://fonts.loli.net/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #eaf2fb;
+    --bg-2: #e0ecf7;
+    --panel: #ffffff;
+    --panel-2: #f3f8fd;
+    --line: #d3e1f0;
+    --line-soft: #e3edf6;
+    --text: #16344e;
+    --muted: #5c7994;
+    --faint: #8ba6bd;
+    --up: #e0393f;
+    --up-soft: rgba(224,57,63,.12);
+    --down: #0ea371;
+    --down-soft: rgba(14,163,113,.12);
+    --port: #2f6fe4;
+    --port-soft: rgba(47,111,228,.12);
+    --bench: #0ba6c8;
+    --bench-soft: rgba(11,166,200,.12);
+    --mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', Consolas, monospace;
+    --sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  /* atmospheric background */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(900px 500px at 12% -8%, rgba(47,111,228,.12), transparent 60%),
+      radial-gradient(1000px 560px at 92% -10%, rgba(11,166,200,.14), transparent 60%),
+      radial-gradient(700px 500px at 50% 120%, rgba(14,163,113,.07), transparent 60%);
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(22,52,78,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(22,52,78,.035) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 78%);
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 28px 28px 60px; }
+
+  /* ---- header ---- */
+  header { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .mark { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(150deg, var(--port), var(--bench)); box-shadow: 0 8px 26px rgba(47,111,228,.25); }
+  .mark svg { display: block; }
+  .brand h1 { font-size: 20px; font-weight: 900; letter-spacing: .5px; line-height: 1.2; }
+  .brand .sub { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 400; }
+
+  .hdr-right { display: flex; align-items: center; gap: 14px; }
+  .winner { display: flex; align-items: center; padding: 10px 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+  .winner .winner-label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 1px; margin-right: 8px; }
+  .winner .winner-text { font-size: 20px; font-weight: 900; letter-spacing: 2px; line-height: 1; }
+  .live { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); font-family: var(--mono); }
+  .live .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--down); box-shadow: 0 0 0 0 rgba(14,203,129,.5); animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(14,203,129,.4); } 70% { box-shadow: 0 0 0 9px rgba(14,203,129,0); } 100% { box-shadow: 0 0 0 0 rgba(14,203,129,0); } }
+  .btn {
+    font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text);
+    background: var(--panel-2); border: 1px solid var(--line); border-radius: 9px;
+    padding: 9px 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    transition: border-color .18s, transform .08s, background .18s;
+  }
+  .btn:hover { border-color: #b8cde4; background: #e9f2fb; }
+  .btn:active { transform: translateY(1px); }
+  .btn .spin { transition: transform .4s; }
+  .btn.loading .spin { transform: rotate(360deg); }
+
+  /* ---- hero cards ---- */
+  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
+  .card { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(180deg, var(--panel-2), var(--panel)); padding: 22px 22px 20px; }
+  .card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px; }
+  .card.port::before { background: linear-gradient(90deg, transparent, var(--port), transparent); }
+  .card.bench::before { background: linear-gradient(90deg, transparent, var(--bench), transparent); }
+  .card .top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .card .name { font-size: 15px; font-weight: 700; letter-spacing: .3px; }
+  .card.port .name::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--port); margin-right: 8px; vertical-align: 1px; }
+  .card.bench .name::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--bench); margin-right: 8px; vertical-align: 1px; }
+  .tag { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+  .card .main { margin-top: 18px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .mega { font-family: var(--mono); font-weight: 700; font-size: 44px; line-height: .95; letter-spacing: -1px; }
+  .mega small { font-size: 18px; font-weight: 500; color: var(--muted); margin-right: 4px; }
+  .stats { display: flex; flex-direction: column; gap: 7px; text-align: right; font-family: var(--mono); font-size: 13px; }
+  .stats .k { color: var(--faint); }
+  .stats .v { color: var(--text); }
+  .chips { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { display: flex; align-items: center; gap: 8px; padding: 7px 11px; border-radius: 8px; border: 1px solid var(--line-soft); background: rgba(22,52,78,.03); font-size: 12px; }
+  .chip .w { color: var(--faint); font-family: var(--mono); font-size: 11px; }
+  .chip .pct { font-family: var(--mono); font-weight: 600; }
+
+  .up { color: var(--up); }
+  .down { color: var(--down); }
+  .flat { color: var(--muted); }
+
+  /* ---- chart ---- */
+  .panel { border: 1px solid var(--line); border-radius: 16px; background: var(--panel); margin-top: 18px; overflow: hidden; }
+  .panel .head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 16px 20px 0; }
+  .panel .head h2 { font-size: 15px; font-weight: 700; }
+  .panel .head .desc { font-size: 12px; color: var(--muted); font-family: var(--mono); margin-top: 3px; }
+  .tabs { display: flex; gap: 6px; padding: 14px 20px; flex-wrap: wrap; }
+  .tab { font-family: var(--sans); font-size: 13px; color: var(--muted); background: transparent; border: 1px solid transparent; border-radius: 8px; padding: 7px 14px; cursor: pointer; transition: all .16s; }
+  .tab:hover { color: var(--text); background: var(--panel-2); }
+  .tab.active { color: #ffffff; background: linear-gradient(135deg, var(--port), var(--bench)); font-weight: 700; border-color: transparent; }
+  #chart { width: 100%; height: 470px; }
+  .legend-note { padding: 0 20px 16px; display: flex; gap: 20px; flex-wrap: wrap; font-size: 12px; color: var(--muted); font-family: var(--mono); }
+  .legend-note i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: 2px; }
+
+  /* summary */
+  .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+  .sum { border: 1px solid var(--line); border-radius: 13px; background: var(--panel-2); padding: 16px 18px; }
+  .sum .lbl { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 7px; }
+  .sum .lbl i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+  .sum .val { font-family: var(--mono); font-size: 26px; font-weight: 700; margin-top: 9px; }
+  .sum .delta { font-family: var(--mono); font-size: 13px; margin-top: 5px; }
+
+  /* ---- table ---- */
+  .table-wrap { margin-top: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); overflow: hidden; }
+  .table-wrap .ttl { padding: 16px 20px 12px; font-size: 15px; font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { text-align: right; color: var(--faint); font-weight: 500; font-size: 12px; padding: 9px 16px; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line); white-space: nowrap; }
+  thead th:nth-child(1), thead th:nth-child(2) { text-align: left; }
+  tbody td { text-align: right; padding: 13px 16px; font-family: var(--mono); border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody td:nth-child(1), tbody td:nth-child(2) { text-align: left; }
+  tbody tr:hover { background: rgba(22,52,78,.03); }
+  .tname { font-family: var(--sans); font-weight: 600; color: var(--text); }
+  .tcode { font-family: var(--mono); font-size: 11px; color: var(--faint); }
+  .group-row td { background: var(--bench-soft); font-weight: 600; color: var(--bench); }
+  .bw { color: var(--faint); }
+  .price { color: var(--text); }
+  .pct-cell.up { background: var(--up-soft); }
+  .pct-cell.down { background: var(--down-soft); }
+  td.pct-cell { padding: 6px 12px; border-radius: 6px; font-weight: 600; }
+
+  footer { margin-top: 28px; text-align: center; color: var(--faint); font-size: 12px; line-height: 1.7; }
+  footer code { font-family: var(--mono); color: var(--muted); }
+
+  /* toast */
+  #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: #ffffff; border: 1px solid #c7d9ec; color: var(--text); padding: 11px 18px; border-radius: 10px; font-size: 13px; opacity: 0; pointer-events: none; transition: all .25s; z-index: 50; box-shadow: 0 10px 30px rgba(22,52,78,.12); }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  #loading { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: var(--bg); transition: opacity .4s; }
+  #loading .box { text-align: center; }
+  #loading .bar { width: 46px; height: 46px; margin: 0 auto 16px; border: 3px solid var(--line); border-top-color: var(--port); border-radius: 50%; animation: rot 1s linear infinite; }
+  @keyframes rot { to { transform: rotate(360deg); } }
+  #loading p { color: var(--muted); font-size: 13px; font-family: var(--mono); }
+
+  @media (max-width: 720px) {
+    .hero { grid-template-columns: 1fr; }
+    .summary { grid-template-columns: 1fr; }
+    .mega { font-size: 36px; }
+    #chart { height: 380px; }
+    .wrap { padding: 18px 14px 50px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="mark">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M5 16 L9 12 L12 15 L19 7" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 5 V19 H22" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity=".55"/>
+          </svg>
+        </div>
+        <div>
+          <h1>五毒🐶 vs 皮皮🐷</h1>
+          <div class="sub">持仓走势实时对比 · 归一化基准 100</div>
+        </div>
+      </div>
+      <div class="winner" id="winnerWrap" style="display:none">
+        <span class="winner-label">今日战果</span>
+        <span id="winnerName" class="winner-text">--</span>
+      </div>
+      <div class="hdr-right">
+        <span class="live"><span class="dot"></span>实时行情 · <span id="updated">--:--:--</span></span>
+        <button class="btn" id="refreshBtn"><span class="spin">⟳</span>刷新</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="card port" id="cardPort">
+        <div class="top">
+          <span class="name">五毒🐶组合</span>
+          <span class="tag">66 / 10.3 / 3 / 3.6 / 2.4 / 3（初始权重）</span>
+        </div>
+        <div class="main">
+          <div class="mega" id="portPct">--</div>
+          <div class="stats">
+            <span class="k">组合点位(基1000)</span>
+            <span class="v" id="portPoint">--</span>
+          </div>
+        </div>
+        <div class="chips" id="portChips"></div>
+      </div>
+
+      <div class="card bench" id="cardBench">
+        <div class="top">
+          <span class="name">皮皮🐷</span>
+          <span class="tag">50 / 50 初始权重</span>
+        </div>
+        <div class="main">
+          <div class="mega" id="benchPct">--</div>
+          <div class="stats">
+            <span class="k">组合点位(基1000)</span>
+            <span class="v" id="benchPoint">--</span>
+          </div>
+        </div>
+        <div class="chips" id="benchChips"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head">
+        <div>
+          <h2>区间走势对比</h2>
+          <div class="desc">双标的归一化到 100 对齐比较</div>
+        </div>
+      </div>
+      <div class="tabs" id="tabs">
+        <button class="tab" data-k="intraday">分时</button>
+        <button class="tab active" data-k="p1015">自10-15</button>
+        <button class="tab" data-k="m1">近1月</button>
+        <button class="tab" data-k="m3">近3月</button>
+        <button class="tab" data-k="m6">近6月</button>
+        <button class="tab" data-k="y1">近1年</button>
+        <button class="tab" data-k="y3">近3年</button>
+      </div>
+      <div id="chart"></div>
+      <div class="legend-note">
+        <span><i style="background:var(--port)"></i>五毒🐶组合</span>
+        <span><i style="background:var(--bench)"></i>皮皮🐷</span>
+        <span><i style="background:var(--line)"></i>基准线 100</span>
+      </div>
+    </section>
+
+    <section class="summary">
+      <div class="sum"><div class="lbl"><i style="background:var(--port)"></i>五毒🐶组合</div><div class="val" id="sumPortVal">--</div><div class="delta" id="sumPortD">--</div></div>
+      <div class="sum"><div class="lbl"><i style="background:var(--bench)"></i>皮皮🐷</div><div class="val" id="sumBenchVal">--</div><div class="delta" id="sumBenchD">--</div></div>
+      <div class="sum"><div class="lbl"><i style="background:var(--text)"></i>超额(五毒🐶 − 皮皮🐷)</div><div class="val" id="sumDiffVal">--</div><div class="delta" id="sumDiffD">--</div></div>
+    </section>
+
+    <section class="table-wrap">
+      <div class="ttl">持仓明细 · 实时行情</div>
+      <table>
+        <thead>
+          <tr><th>名称</th><th>代码</th><th>权重</th><th>现价</th><th>涨跌额</th><th>涨跌幅</th><th>今开</th><th>最高</th><th>最低</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </section>
+
+    <footer>
+      数据来源：东方财富公开行情接口 · 组合按买入持有计算（权重随涨跌漂移） · 组合点位 = 1000 × (Σ权重×现价/昨收 + 现金占比)<br/>
+      前复权日线数据计算区间收益，仅用于走势对比参考，不构成投资建议。
+    </footer>
+  </div>
+
+  <div id="loading"><div class="box"><div class="bar"></div><p>加载行情数据…</p></div></div>
+  <div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // ---- 标的基础配置 ----
+  const PORT_NAME  = "五毒🐶组合";
+  const BENCH_NAME = "皮皮🐷";
+  const STOCKS = [
+    { code: "600008", market: 1, name: "首创环保", weight: 0.66,  group: "port" },
+    { code: "600096", market: 1, name: "云天化",   weight: 0.103, group: "port" },
+    { code: "601899", market: 1, name: "紫金矿业", weight: 0.03,  group: "port" },
+    { code: "002001", market: 0, name: "新和成",   weight: 0.036, group: "port" },
+    { code: "002749", market: 0, name: "国光股份", weight: 0.024, group: "port" },
+    { code: "000937", market: 0, name: "冀中能源", weight: 0.03,  group: "port" },
+    { code: "002714", market: 0, name: "牧原股份", weight: 0.50,  group: "bench" },
+    { code: "001201", market: 0, name: "东瑞股份", weight: 0.50,  group: "bench" }
+  ];
+  const PORT  = STOCKS.filter(s => s.group === "port");
+  const BENCH = STOCKS.filter(s => s.group === "bench");
+  const secid = s => (s.market === 1 ? "1." : "0.") + s.code;
+
+  const PERIODS = {
+    intraday: { label: "分时",  type: "intraday" },
+    p1015: { label: "自10-15", start: "2026-10-15" },
+    m1: { label: "近1月", days: 22 },
+    m3: { label: "近3月", days: 66 },
+    m6: { label: "近6月", days: 132 },
+    y1: { label: "近1年", days: 250 },
+    y3: { label: "近3年", days: 750 }
+  };
+
+  // ---- 状态 ----
+  let currentKey = "p1015";
+  let quoteMap = {};
+  let chart = null;
+
+  // ---- 工具 ----
+  const $ = id => document.getElementById(id);
+  let cbSeq = 0;
+  function jsonp(url) {
+    return new Promise((resolve, reject) => {
+      const name = "__cb" + (++cbSeq) + "_" + Date.now();
+      const script = document.createElement("script");
+      const timer = setTimeout(() => { cleanup(); reject(new Error("请求超时")); }, 12000);
+      function cleanup() { try { delete window[name]; } catch (e) {} if (script.parentNode) script.parentNode.removeChild(script); clearTimeout(timer); }
+      window[name] = data => { cleanup(); resolve(data); };
+      script.src = url + (url.indexOf("?") < 0 ? "?" : "&") + "cb=" + name;
+      script.onerror = () => { cleanup(); reject(new Error("网络错误")); };
+      document.body.appendChild(script);
+    });
+  }
+  const n2 = v => (v == null || isNaN(v)) ? "--" : Number(v).toFixed(2);
+  const signClass = v => v > 0 ? "up" : v < 0 ? "down" : "flat";
+  const sPct = v => (v == null || isNaN(v)) ? "--" : (v > 0 ? "+" : "") + Number(v).toFixed(2) + "%";
+  const sNum = v => (v == null || isNaN(v)) ? "--" : (v > 0 ? "+" : "") + Number(v).toFixed(2);
+  const wTxt = w => { const p = Math.round(w * 1000) / 10; return (p % 1 === 0 ? p : p.toFixed(1)) + "%"; };
+
+  function toast(msg) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(t._h);
+    t._h = setTimeout(() => t.classList.remove("show"), 3200);
+  }
+
+  // ---- 数据 ----
+  async function loadQuotes() {
+    const secids = STOCKS.map(secid).join(",");
+    const url = "https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&invt=2&fields=f2,f3,f4,f12,f13,f14,f15,f16,f17,f18&secids=" + secids;
+    const data = await jsonp(url);
+    const diff = (data && data.data && data.data.diff) || [];
+    const map = {};
+    diff.forEach(d => {
+      map[d.f12] = { price: d.f2, pct: d.f3, chg: d.f4, open: d.f17, high: d.f15, low: d.f16, pre: d.f18 };
+    });
+    return map;
+  }
+
+  async function loadIntraday() {
+    const out = [];
+    await Promise.all(STOCKS.map(s => {
+      const url = "https://push2his.eastmoney.com/api/qt/stock/trends2/get?secid=" + secid(s) +
+        "&fields1=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13&fields2=f51,f52,f53,f54,f55,f56,f57,f58&ndays=1&iscr=0";
+      return jsonp(url).then(data => {
+        const d = data && data.data;
+        const trends = (d && d.trends) || [];
+        const times = []; const closes = {};
+        trends.forEach(r => {
+          const p = Array.isArray(r) ? r : String(r).split(",");
+          const t = p[0];
+          times.push(t);
+          closes[t] = parseFloat(p[2]);
+        });
+        out.push({ code: s.code, times, closes });
+      });
+    }));
+    return out;
+  }
+
+  async function loadKlines() {
+    const beg = begYmd();
+    const out = {};
+    await Promise.all(STOCKS.map(s => {
+      const url = "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=" + secid(s) +
+        "&klt=101&fqt=1&beg=" + beg + "&end=20500101&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61";
+      return jsonp(url).then(data => {
+        const klines = (data && data.data && data.data.klines) || [];
+        out[s.code] = klines.map(k => {
+          const p = String(k).split(",");
+          return { date: p[0], close: parseFloat(p[2]) };
+        });
+      });
+    }));
+    return out;
+  }
+
+  // ---- 计算 ----
+  function groupPct(group, q) {
+    let p = 0;
+    for (const s of group) { const o = q[s.code]; if (o && !isNaN(o.pct)) p += s.weight * o.pct; }
+    return p;
+  }
+  function groupPoint(group, q) {
+    let v = 0, wsum = 0, ok = true;
+    for (const s of group) { const o = q[s.code]; if (!o || !o.pre) { ok = false; break; } v += s.weight * (o.price / o.pre); wsum += s.weight; }
+    if (ok) v += (1 - wsum);
+    return ok ? v * 1000 : null;
+  }
+  const portPct = q => groupPct(PORT, q);
+  const benchPct = q => groupPct(BENCH, q);
+  const portPoint = q => groupPoint(PORT, q);
+  const benchPoint = q => groupPoint(BENCH, q);
+  // 实时市值权重（相对昨收基准，权重随当日涨跌漂移）
+  function liveWeights(group, q) {
+    const cash = 1 - group.reduce((a, s) => a + s.weight, 0);
+    let market = 0;
+    const m = {};
+    for (const s of group) {
+      const o = q[s.code];
+      const r = (o && o.pre && o.pre > 0) ? (o.price / o.pre) : 1;
+      m[s.code] = s.weight * r;
+      market += m[s.code];
+    }
+    const total = market + cash;
+    const out = {};
+    for (const s of group) out[s.code] = total > 0 ? (m[s.code] / total) : s.weight;
+    return out;
+  }
+
+  function begYmd() {
+    const d = new Date();
+    d.setFullYear(d.getFullYear() - 4);
+    const p = x => (x < 10 ? "0" + x : "" + x);
+    return "" + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate());
+  }
+
+  function fmtAxisLabel(v) {
+    if (currentKey === "intraday") return v.length >= 16 ? v.slice(11, 16) : v;
+    const days = PERIODS[currentKey].days;
+    if (v.length >= 10) return days > 150 ? v.slice(0, 7) : v.slice(5, 10);
+    return v;
+  }
+
+  // ---- 渲染：分时 ----
+  function renderIntraday(rows) {
+    const baseRow = rows.find(r => r.times && r.times.length) || { times: [] };
+    const axis = baseRow.times;
+    // per-stock index (base 100 = 昨收)
+    const idx = {};
+    for (const s of STOCKS) {
+      const r = rows.find(x => x.code === s.code);
+      const pre = quoteMap[s.code] && quoteMap[s.code].pre;
+      idx[s.code] = axis.map(t => { const c = r && r.closes ? r.closes[t] : null; return (c != null && pre) ? (c / pre) * 100 : null; });
+    }
+    const combine = group => axis.map((t, i) => {
+      let v = 0, wsum = 0;
+      for (const s of group) { const vi = idx[s.code][i]; if (vi == null) return null; v += s.weight * vi; wsum += s.weight; }
+      return v + (1 - wsum) * 100;
+    });
+    const port = combine(PORT);
+    const bench = combine(BENCH);
+    drawChart(axis, port, bench);
+    fillSummary(port, bench);
+  }
+
+  // ---- 渲染：日线 ----
+  function renderDaily(klines, opts) {
+    const ref = klines[BENCH[0].code];
+    let start;
+    if (opts.start) {
+      start = ref.findIndex(k => k.date >= opts.start);
+      if (start < 0) start = ref.length - 1;
+    } else {
+      start = Math.max(0, ref.length - opts.days);
+    }
+    const dates = ref.slice(start).map(k => k.date);
+
+    const mapClose = {};
+    for (const s of STOCKS) { const m = {}; klines[s.code].forEach(k => m[k.date] = k.close); mapClose[s.code] = m; }
+
+    const vals = {};
+    for (const s of STOCKS) {
+      let last = null;
+      vals[s.code] = dates.map(d => { const c = mapClose[s.code][d]; if (c == null) return last; last = c; return c; });
+    }
+
+    // 组合：买入持有，权重随涨跌自然漂移
+    const cumulate = group => {
+      const n = vals[group[0].code].length;
+      const cash = 1 - group.reduce((a, s) => a + s.weight, 0);
+      // 各成分买入基准价 = 区间内首个有效价；买入前按现金(1倍)计
+      const ratio = {};
+      for (const s of group) {
+        const b0 = vals[s.code].find(x => x != null);
+        ratio[s.code] = vals[s.code].map(p => (p == null || b0 == null || b0 === 0) ? 1 : p / b0);
+      }
+      const out = new Array(n);
+      for (let i = 0; i < n; i++) {
+        let v = cash;
+        for (const s of group) v += s.weight * ratio[s.code][i];
+        out[i] = v * 100;
+      }
+      return out;
+    };
+
+    const port = cumulate(PORT);
+    const bench = cumulate(BENCH);
+    drawChart(dates, port, bench);
+    fillSummary(port, bench);
+  }
+
+  // ---- ECharts ----
+  function drawChart(axis, portSeries, benchSeries) {
+    if (typeof echarts === "undefined") { showChartFallback(axis, portSeries, benchSeries); return; }
+    if (!chart) { chart = echarts.init($("chart"), null, { renderer: "canvas" }); }
+    const isIntra = currentKey === "intraday";
+
+    const option = {
+      backgroundColor: "transparent",
+      animationDuration: 400,
+      grid: { left: 56, right: 24, top: 26, bottom: isIntra ? 44 : 52 },
+      legend: { show: false },
+      tooltip: {
+        trigger: "axis",
+        axisPointer: { type: "cross", lineStyle: { color: "#9fbcdd" }, crossStyle: { color: "#9fbcdd" }, label: { backgroundColor: "#dbe8f5", textStyle: { color: "#16344e" } } },
+        backgroundColor: "rgba(255,255,255,.98)",
+        borderColor: "#d3e1f0",
+        borderWidth: 1,
+        padding: [10, 14],
+        textStyle: { color: "#16344e", fontFamily: "JetBrains Mono, monospace", fontSize: 12 },
+        formatter: function (params) {
+          let html = '<div style="font-size:12px;color:#5c7994;margin-bottom:6px;font-family:\'JetBrains Mono\',monospace">' + params[0].axisValue + '</div>';
+          params.forEach(p => {
+            html += '<div style="display:flex;justify-content:space-between;gap:28px;align-items:center;padding:2px 0">' +
+              '<span style="display:flex;align-items:center;gap:7px"><span style="width:9px;height:9px;border-radius:2px;background:' + p.color + '"></span>' +
+              p.seriesName + '</span><b>' + (p.value == null ? "--" : p.value.toFixed(2)) + '</b></div>';
+          });
+          if (params.length === 2 && params[0].value != null && params[1].value != null) {
+            const diff = params[0].value - params[1].value;
+            const c = diff >= 0 ? "#e0393f" : "#0ea371";
+            html += '<div style="margin-top:7px;padding-top:7px;border-top:1px solid #e3edf6;font-size:12px;color:' + c + '">五毒🐶 − 皮皮🐷：' + (diff >= 0 ? "+" : "") + diff.toFixed(2) + '</div>';
+          }
+          return html;
+        }
+      },
+      xAxis: {
+        type: "category",
+        data: axis,
+        boundaryGap: false,
+        axisLine: { lineStyle: { color: "#d3e1f0" } },
+        axisTick: { show: false },
+        axisLabel: { color: "#8ba6bd", fontFamily: "JetBrains Mono, monospace", fontSize: 11, formatter: fmtAxisLabel, hideOverlap: true },
+        splitLine: { show: false }
+      },
+      yAxis: {
+        type: "value",
+        scale: true,
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: "#8ba6bd", fontFamily: "JetBrains Mono, monospace", fontSize: 11, formatter: v => v.toFixed(1) },
+        splitLine: { lineStyle: { color: "#e3edf6" }, show: true }
+      },
+      series: [
+        {
+          name: PORT_NAME, type: "line", data: portSeries, showSymbol: false, smooth: false,
+          lineStyle: { color: "#2f6fe4", width: 2 },
+          itemStyle: { color: "#2f6fe4" },
+          areaStyle: { color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: "rgba(47,111,228,.20)" }, { offset: 1, color: "rgba(47,111,228,0)" }] } },
+          connectNulls: true,
+          markLine: { silent: true, symbol: "none", lineStyle: { color: "#b6cce4", type: "dashed", width: 1 }, label: { show: false }, data: [{ yAxis: 100 }] }
+        },
+        {
+          name: BENCH_NAME, type: "line", data: benchSeries, showSymbol: false, smooth: false,
+          lineStyle: { color: "#0ba6c8", width: 2 },
+          itemStyle: { color: "#0ba6c8" },
+          areaStyle: { color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: "rgba(11,166,200,.18)" }, { offset: 1, color: "rgba(11,166,200,0)" }] } },
+          connectNulls: true
+        }
+      ]
+    };
+    chart.setOption(option, true);
+  }
+
+  // ---- 汇总 ----
+  function fillSummary(portSeries, benchSeries) {
+    const pv = lastNum(portSeries), bv = lastNum(benchSeries);
+    const pd = pv == null ? null : pv - 100, bd = bv == null ? null : bv - 100;
+    const diff = (pd == null || bd == null) ? null : (pv - bv);
+
+    set($("sumPortVal"), pv == null ? "--" : pv.toFixed(2), "val", signClass(pd));
+    set($("sumPortD"), "区间 " + sPct(pd), "delta", signClass(pd));
+    set($("sumBenchVal"), bv == null ? "--" : bv.toFixed(2), "val", signClass(bd));
+    set($("sumBenchD"), "区间 " + sPct(bd), "delta", signClass(bd));
+    set($("sumDiffVal"), diff == null ? "--" : (diff >= 0 ? "+" : "") + diff.toFixed(2), "val", signClass(diff));
+    set($("sumDiffD"), "超额收益率 " + sPct(diff), "delta", signClass(diff));
+  }
+  function lastNum(arr) { for (let i = arr.length - 1; i >= 0; i--) if (arr[i] != null && !isNaN(arr[i])) return arr[i]; return null; }
+  function set(el, txt, cls, colorCls) { el.textContent = txt; el.className = cls + " " + (colorCls || ""); }
+
+  // ---- 报价卡片 & 表格 ----
+  function updateCards() {
+    const q = quoteMap;
+    const pp = portPct(q);
+    const point = portPoint(q);
+
+    const pEl = $("portPct");
+    pEl.textContent = sPct(pp);
+    pEl.className = "mega " + signClass(pp);
+    const ptEl = $("portPoint");
+    ptEl.textContent = point == null ? "--" : point.toFixed(2);
+    ptEl.className = "v " + signClass(pp);
+    $("portChips").innerHTML = chipsHtml(PORT, q);
+
+    const bp = benchPct(q);
+    const bpoint = benchPoint(q);
+    const bEl = $("benchPct");
+    bEl.textContent = sPct(bp);
+    bEl.className = "mega " + signClass(bp);
+    const bpt = $("benchPoint");
+    bpt.textContent = bpoint == null ? "--" : bpoint.toFixed(2);
+    bpt.className = "v " + signClass(bp);
+    $("benchChips").innerHTML = chipsHtml(BENCH, q);
+    updateWinner();
+  }
+
+  function chipsHtml(group, q) {
+    const w = liveWeights(group, q);
+    let html = group.map(s => {
+      const o = q[s.code];
+      return '<span class="chip"><span style="font-weight:600">' + s.name + '</span>' +
+        '<span class="w">' + wTxt(w[s.code]) + '</span>' +
+        '<span class="pct ' + signClass(o ? o.pct : 0) + '">' + (o ? sPct(o.pct) : "--") + '</span></span>';
+    }).join("");
+    let stockW = 0;
+    for (const s of group) stockW += w[s.code];
+    const cashW = 1 - stockW;
+    if (cashW > 0.001) {
+      html += '<span class="chip"><span style="font-weight:600">现金</span>' +
+        '<span class="w">' + wTxt(cashW) + '</span>' +
+        '<span class="pct" style="color:var(--muted)">0.00%</span></span>';
+    }
+    return html;
+  }
+
+  function updateWinner() {
+    const pp = portPct(quoteMap);
+    const bp = benchPct(quoteMap);
+    const wrap = $("winnerWrap");
+    const name = $("winnerName");
+    if (pp == null || bp == null || pp === bp) { wrap.style.display = "none"; return; }
+    wrap.style.display = "flex";
+    if (pp > bp) {
+      name.textContent = "五毒🐶赢"; name.style.color = "var(--port)";
+    } else {
+      name.textContent = "🐷 皮皮虾赢"; name.style.color = "var(--bench)";
+    }
+  }
+
+  function updateTable() {
+    const q = quoteMap;
+    let rows = "";
+    const pw = liveWeights(PORT, q);
+    const bw = liveWeights(BENCH, q);
+    const all = [...PORT, ...BENCH];
+    all.forEach(s => {
+      const o = q[s.code];
+      const isPort = s.group === "port";
+      const pctCls = signClass(o ? o.pct : 0);
+      const liveW = isPort ? pw[s.code] : bw[s.code];
+      rows += '<tr' + (isPort ? "" : ' class="group-row"') + '>' +
+        '<td><div class="tname">' + s.name + (isPort ? "" : ' <span style="color:var(--bench);font-weight:700">◆ 皮皮🐷</span>') + '</div>' +
+        '<div class="tcode">' + (s.market === 1 ? "SH" : "SZ") + " " + s.code + '</div></td>' +
+        '<td class="bw">' + wTxt(liveW) + '</td>' +
+        '<td class="price">' + (o ? n2(o.price) : "--") + '</td>' +
+        '<td class="' + pctCls + '">' + (o ? sNum(o.chg) : "--") + '</td>' +
+        '<td class="pct-cell ' + pctCls + '">' + (o ? sPct(o.pct) : "--") + '</td>' +
+        '<td class="bw">' + (o ? n2(o.open) : "--") + '</td>' +
+        '<td class="bw">' + (o ? n2(o.high) : "--") + '</td>' +
+        '<td class="bw">' + (o ? n2(o.low) : "--") + '</td>' +
+        '</tr>';
+    });
+    $("tbody").innerHTML = rows;
+  }
+
+  // ---- 折线降级（无 ECharts 时）----
+  function showChartFallback(axis, portSeries, benchSeries) {
+    const c = $("chart");
+    let html = '<div style="padding:40px;color:#5c7994;font-family:monospace;">图表库加载失败，以下为数据序列前 60 点：<br/><br/>';
+    html += '组合：' + portSeries.slice(0, 60).map(v => v == null ? "-" : v.toFixed(2)).join(", ");
+    html += '<br/><br/>皮皮🐷：' + benchSeries.slice(0, 60).map(v => v == null ? "-" : v.toFixed(2)).join(", ");
+    html += '</div>';
+    c.innerHTML = html;
+  }
+
+  // ---- 主流程 ----
+  async function renderCurrent() {
+    try {
+      if (currentKey === "intraday") {
+        const rows = await loadIntraday();
+        renderIntraday(rows);
+      } else {
+        const klines = await loadKlines();
+        renderDaily(klines, PERIODS[currentKey]);
+      }
+      resizeCharts();
+    } catch (e) {
+      console.error(e);
+      toast("行情加载失败：" + (e && e.message ? e.message : e));
+    }
+  }
+
+  async function refreshAll() {
+    try {
+      quoteMap = await loadQuotes();
+      updateCards();
+      updateTable();
+      $("updated").textContent = new Date().toTimeString().slice(0, 8);
+    } catch (e) {
+      toast("报价刷新失败");
+    }
+    await renderCurrent();
+  }
+
+  function resizeCharts() { if (chart) chart.resize(); }
+
+  // ---- 事件 ----
+  $("tabs").addEventListener("click", e => {
+    const btn = e.target.closest(".tab");
+    if (!btn) return;
+    const k = btn.getAttribute("data-k");
+    if (k === currentKey) return;
+    currentKey = k;
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t === btn));
+    renderCurrent();
+  });
+
+  $("refreshBtn").addEventListener("click", e => {
+    const b = e.currentTarget;
+    b.classList.add("loading");
+    refreshAll().finally(() => setTimeout(() => b.classList.remove("loading"), 300));
+  });
+
+  window.addEventListener("resize", resizeCharts);
+
+  // ---- 启动 ----
+  async function bootstrap() {
+    try {
+      await refreshAll();
+      $("loading").style.opacity = "0";
+      setTimeout(() => { const l = $("loading"); if (l) l.style.display = "none"; }, 400);
+    } catch (e) {
+      $("loading").style.display = "none";
+      toast("初始化失败：" + (e && e.message ? e.message : e));
+    }
+    setInterval(async () => { await refreshAll(); }, 30000);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootstrap);
+  else bootstrap();
+})();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>五毒狗 vs 皮皮🐷</title>
 <link rel="preconnect" href="https://fonts.loli.net" crossorigin />
 <link href="https://fonts.loli.net/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
