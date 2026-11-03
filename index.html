@@ -204,7 +204,7 @@
       <div class="card port" id="cardPort">
         <div class="top">
           <span class="name">五毒狗组合</span>
-          <span class="tag">66 / 10.3 / 3 / 3.6 / 2.4 / 3 · 现金 11.7%</span>
+          <span class="tag">66 / 10.3 / 3 / 3.6 / 2.4 / 3（初始权重）</span>
         </div>
         <div class="main">
           <div class="mega" id="portPct">--</div>
@@ -219,7 +219,7 @@
       <div class="card bench" id="cardBench">
         <div class="top">
           <span class="name">皮皮🐷</span>
-          <span class="tag">50 / 50 固定权重</span>
+          <span class="tag">50 / 50 初始权重</span>
         </div>
         <div class="main">
           <div class="mega" id="benchPct">--</div>
@@ -273,7 +273,7 @@
     </section>
 
     <footer>
-      数据来源：东方财富公开行情接口 · 组合涨跌幅按固定权重加权计算 · 组合点位 = 1000 × (Σ权重×现价/昨收 + 现金占比)<br/>
+      数据来源：东方财富公开行情接口 · 组合按买入持有计算（权重随涨跌漂移） · 组合点位 = 1000 × (Σ权重×现价/昨收 + 现金占比)<br/>
       前复权日线数据计算区间收益，仅用于走势对比参考，不构成投资建议。
     </footer>
   </div>
@@ -414,6 +414,22 @@
   const benchPct = q => groupPct(BENCH, q);
   const portPoint = q => groupPoint(PORT, q);
   const benchPoint = q => groupPoint(BENCH, q);
+  // 实时市值权重（相对昨收基准，权重随当日涨跌漂移）
+  function liveWeights(group, q) {
+    const cash = 1 - group.reduce((a, s) => a + s.weight, 0);
+    let market = 0;
+    const m = {};
+    for (const s of group) {
+      const o = q[s.code];
+      const r = (o && o.pre && o.pre > 0) ? (o.price / o.pre) : 1;
+      m[s.code] = s.weight * r;
+      market += m[s.code];
+    }
+    const total = market + cash;
+    const out = {};
+    for (const s of group) out[s.code] = total > 0 ? (m[s.code] / total) : s.weight;
+    return out;
+  }
 
   function begYmd() {
     const d = new Date();
@@ -472,21 +488,23 @@
       vals[s.code] = dates.map(d => { const c = mapClose[s.code][d]; if (c == null) return last; last = c; return c; });
     }
 
-    // 组合：每日再平衡，累积收益
+    // 组合：买入持有，权重随涨跌自然漂移
     const cumulate = group => {
       const n = vals[group[0].code].length;
-      const s = new Array(n);
-      s[0] = 100;
-      for (let i = 1; i < n; i++) {
-        let r = 0, ok = true;
-        for (const st of group) {
-          const a = vals[st.code][i - 1], b = vals[st.code][i];
-          if (a == null || b == null || a === 0) { ok = false; break; }
-          r += st.weight * (b / a - 1);
-        }
-        s[i] = ok ? s[i - 1] * (1 + r) : s[i - 1];
+      const cash = 1 - group.reduce((a, s) => a + s.weight, 0);
+      // 各成分买入基准价 = 区间内首个有效价；买入前按现金(1倍)计
+      const ratio = {};
+      for (const s of group) {
+        const b0 = vals[s.code].find(x => x != null);
+        ratio[s.code] = vals[s.code].map(p => (p == null || b0 == null || b0 === 0) ? 1 : p / b0);
       }
-      return s;
+      const out = new Array(n);
+      for (let i = 0; i < n; i++) {
+        let v = cash;
+        for (const s of group) v += s.weight * ratio[s.code][i];
+        out[i] = v * 100;
+      }
+      return out;
     };
 
     const port = cumulate(PORT);
@@ -610,12 +628,22 @@
   }
 
   function chipsHtml(group, q) {
-    return group.map(s => {
+    const w = liveWeights(group, q);
+    let html = group.map(s => {
       const o = q[s.code];
       return '<span class="chip"><span style="font-weight:600">' + s.name + '</span>' +
-        '<span class="w">' + wTxt(s.weight) + '</span>' +
+        '<span class="w">' + wTxt(w[s.code]) + '</span>' +
         '<span class="pct ' + signClass(o ? o.pct : 0) + '">' + (o ? sPct(o.pct) : "--") + '</span></span>';
     }).join("");
+    let stockW = 0;
+    for (const s of group) stockW += w[s.code];
+    const cashW = 1 - stockW;
+    if (cashW > 0.001) {
+      html += '<span class="chip"><span style="font-weight:600">现金</span>' +
+        '<span class="w">' + wTxt(cashW) + '</span>' +
+        '<span class="pct" style="color:var(--muted)">0.00%</span></span>';
+    }
+    return html;
   }
 
   function updateWinner() {
@@ -635,15 +663,18 @@
   function updateTable() {
     const q = quoteMap;
     let rows = "";
+    const pw = liveWeights(PORT, q);
+    const bw = liveWeights(BENCH, q);
     const all = [...PORT, ...BENCH];
     all.forEach(s => {
       const o = q[s.code];
       const isPort = s.group === "port";
       const pctCls = signClass(o ? o.pct : 0);
+      const liveW = isPort ? pw[s.code] : bw[s.code];
       rows += '<tr' + (isPort ? "" : ' class="group-row"') + '>' +
         '<td><div class="tname">' + s.name + (isPort ? "" : ' <span style="color:var(--bench);font-weight:700">◆ 皮皮🐷</span>') + '</div>' +
         '<div class="tcode">' + (s.market === 1 ? "SH" : "SZ") + " " + s.code + '</div></td>' +
-        '<td class="bw">' + wTxt(s.weight) + '</td>' +
+        '<td class="bw">' + wTxt(liveW) + '</td>' +
         '<td class="price">' + (o ? n2(o.price) : "--") + '</td>' +
         '<td class="' + pctCls + '">' + (o ? sNum(o.chg) : "--") + '</td>' +
         '<td class="pct-cell ' + pctCls + '">' + (o ? sPct(o.pct) : "--") + '</td>' +
